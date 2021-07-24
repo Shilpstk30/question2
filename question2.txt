@@ -1,0 +1,136 @@
+package pack1;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Question2 {
+
+	public static void main(String[] args) throws InterruptedException
+	{
+		System.setProperty("webdriver.chrome.driver", "E:\\selenium\\chromedriver\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://accounts.datoms.io/login");
+		
+     	WebElement email=driver.findElement(By.xpath("//input[@id='email']"));
+		WebElement password=driver.findElement(By.xpath("//input[@id='password']"));
+		WebElement login=driver.findElement(By.xpath("//input[@id='form_submit_btn']"));
+		Thread.sleep(3000);
+		//1. Click on login button without entering the email address and password
+		login.click();
+		Thread.sleep(3000);
+
+		String exectedMessage3="Email field cannot be empty!";
+		WebElement errorMessage3=driver.findElement(By.xpath("//div[@class='error-msg']"));
+		String actual =errorMessage3.getText().toString();
+	//	System.out.println(actual);
+
+		if(actual.equals(exectedMessage3))
+		{
+			System.out.println("Email Id field cannot be empty");
+		}
+		//2. Click on login button without entering the password
+		email.sendKeys("shilpamysore95@gmail.com");
+		Thread.sleep(3000);
+
+		login.click();
+		Thread.sleep(3000);
+
+		String exectedMessage4="Password field cannot be empty!";
+		WebElement errorMessage4=driver.findElement(By.xpath("//div[@class='error-msg']"));
+		String errorMessage4Text=errorMessage4.getText().toString();
+		if(errorMessage4Text.equals(exectedMessage4))
+		{
+			System.out.println("Password field cannot be empty");
+		}
+		
+		//3. enter invalid email ID
+		Thread.sleep(3000);
+
+		email.clear();
+		password.clear();
+		Thread.sleep(3000);
+
+		email.sendKeys("shilpa");
+		Thread.sleep(3000);
+
+		login.click();
+		Thread.sleep(3000);
+
+		String exectedMessage5="Please enter a valid email!";
+		String errorMessage5=driver.findElement(By.xpath("//div[@class='error-msg']")).getText().toString();
+		
+		if(errorMessage5.equals(exectedMessage5))
+		{
+			System.out.println("Email ID is invalid");
+		}
+		//3. Enter wrong email ID and password
+		Thread.sleep(3000);
+
+		email.clear();
+		password.clear();
+		Thread.sleep(3000);
+
+		email.sendKeys("shilpamysore95@gmail.com");
+		Thread.sleep(3000);
+
+		password.sendKeys("Shil@shil5");
+		Thread.sleep(3000);
+
+		login.click();
+		Thread.sleep(3000);
+
+		String expectedError="Email id does not exist!";
+		String errorMessage=driver.findElement(By.xpath("//div[@class='error-msg']")).getText().toString();
+		
+		if(errorMessage.equals(expectedError))
+		{
+			System.out.println("Login is unsucessful");
+		}
+		
+		//Recover Your Account page
+		//1.When email id is not entered and clicked on recover account button
+		Thread.sleep(3000);
+		WebElement forgotPassword=driver.findElement(By.xpath("//a[contains(text(),'Forgot Password ?')]"));
+		forgotPassword.click();
+		Thread.sleep(3000);
+		
+		WebElement recoverAccountButton=driver.findElement(By.xpath("//input[@id='login_back']"));
+		recoverAccountButton.click();
+		Thread.sleep(3000);
+
+		String expectedErrorMessage2="Email field cannot be empty!";
+		WebElement ErrorMessage2=driver.findElement(By.xpath("//div[@id='show_message']"));
+		String actualErrorMessage=ErrorMessage2.getText();
+		if(expectedErrorMessage2.equals(actualErrorMessage))
+		{
+			System.out.println("Email ID field cannot be blank. Please enter the email address");
+		}
+		
+		//2..Enter the email address and click on recover account button
+		WebElement recoverEmail=driver.findElement(By.xpath("//input[@id='email']"));
+		Thread.sleep(3000);
+
+    	recoverEmail.sendKeys("shilpamysore95@gmail.com");
+		Thread.sleep(3000);
+
+		recoverAccountButton.click();
+		Thread.sleep(3000);
+		String expectedErrorMessage6="Sorry, no user found for the given email Id.";
+		String ErrorMessage6=driver.findElement(By.xpath("//div[@id='show_message']")).getText().toString();
+		if(expectedErrorMessage6.contains(ErrorMessage6))
+		{
+			System.out.println("Sorry no user found");
+		}
+		
+   
+        //3. Click on back to login page
+		WebElement backToLogin=driver.findElement(By.xpath("//a[contains(text(),'Back to login')]"));
+		backToLogin.click();
+		Thread.sleep(3000);
+		driver.quit();
+
+	}
+}
